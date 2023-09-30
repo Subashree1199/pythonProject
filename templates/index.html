@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dropdown with Input</title>
+</head>
+<body>
+    <h1>Select an option from the dropdown:</h1>
+    <form method="POST" action="/">
+        <select name="selected_option">
+            {% for option in options %}
+                <option value="{{ option }}" {% if selected_option == option %}selected{% endif %}>{{ option }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+
+    {% if content %}
+        <h2>Contents of selected option:</h2>
+        <form id="inputForm">
+            <ul>
+                <li>Part of - {{ content }}</li>  <!-- Display "P36" with the value entered -->
+                <input type="text" name="Part of" placeholder="Enter value for Part of" value="{{ content }}">
+            </ul>
+            <input type="button" value="Get JSON" onclick="getJSONData()">
+        </form>
+    {% endif %}
+
+    <div id="resultDiv"></div>
+<form>
+
+        {{ dropdown_code | safe }}
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        function getJSONData() {
+            const form = document.getElementById("inputForm");
+            const formData = new FormData(form);
+            const jsonData = {};
+
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            const resultDiv = document.getElementById("resultDiv");
+            resultDiv.innerHTML = "<pre>" + JSON.stringify(jsonData, null, 2) + "</pre>";
+        }
+    </script>
+</body>
+</html>
